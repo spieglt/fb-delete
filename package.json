@@ -1,0 +1,14 @@
+{
+  "name": "fb",
+  "version": "1.0.0",
+  "description": "git them posts on outta here",
+  "main": "index.js",
+  "scripts": {
+    "test": "test"
+  },
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "puppeteer": "^1.2.0"
+  }
+}
