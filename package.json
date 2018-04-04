@@ -9,6 +9,7 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
+    "dotenv": "^5.0.1",
     "puppeteer": "^1.2.0"
   }
 }
