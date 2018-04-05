@@ -21,12 +21,11 @@ None of your data (username, password, or anything else) is sent to me or anywhe
 - Close windows if it gets stuck, feel free to run again
 
 \*At the category prompt, use the space bar to select/deselect categories, the up and down arrows to move between them, and the Enter key to proceed. 
-`a` selects all categories (DANGEROUS! WILL UNFRIEND PEOPLE, DELETE PHOTOS, ETC.), and `i` inverts the current selection.
+`a` selects all categories (DANGEROUS! WILL UNFRIEND PEOPLE, DELETE PHOTOS, ETC.), and `i` inverts the current selection. Same goes for years selection.
 Navigate to your Activity Log on facebook.com as you normally would, click "Filters", and select a category if you'd like to see the kind of content that will be deleted.
 
 # Planned features
 - Output log file
-- Accept year ranges
 - Error handling
 
 Also strongly recommended: https://blog.mozilla.org/firefox/facebook-container-extension/

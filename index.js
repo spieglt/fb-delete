@@ -20,23 +20,32 @@ async function main() {
   await page.$eval('input[name=login]', button => button.click());
   await page.goto('https://mbasic.facebook.com/');
 
-  await next(answers.categories, answers.year);
+  await next(answers.categories, answers.years);
 }
 
-async function next(categories, year) {
+async function next(categories, years) {
   await followLinkByContent('Profile');
   await followLinkByContent('Activity Log');
   await followLinkByContent('Filter');
 
   for (let i in categories) {
-    console.log("Deleting category " + categories[i] + " for year " + year);
+    console.log("Deleting category " + categories[i]);
     await followLinkByContent(categories[i]);
-    await followLinkByContent(year);
-    await deleteYear(year);
+    for (let j in years) {
+      console.log("In year " + years[j])
+      try {
+        await followLinkByContent(years[j]);
+        await deleteYear(years[j]);
+      } catch(e) {
+        console.log(`Year ${years[j]} not found.`, e);
+      }
+    }
     await followLinkByContent(categories[i]);
   }
 
   await page.close()
+  console.log("Done!");
+  process.exit();
 }
 
 async function deletePosts() {
@@ -93,7 +102,7 @@ async function followLinkByContent(content) {
 async function deleteYear(year) {
   var monLinks = await getMonthLinks(year);
   for (let mon in monLinks) {
-    console.log("Deleting month: ", monLinks[mon]);
+    // console.log("Deleting month: ", monLinks[mon]);
     await page.goto(monLinks[mon]);
     await deletePosts();
   }

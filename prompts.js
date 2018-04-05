@@ -1,6 +1,13 @@
 'use strict';
 const inquirer = require('inquirer');
 
+var currentYear = (new Date()).getFullYear();
+var years = [];
+for (let i = 2004; i <= currentYear; i++) {
+  years.push(i.toString());
+}
+years.reverse();
+
 var categories = ["Posts",
   "Posts You're Tagged In",
   "Photos and Videos",
@@ -48,18 +55,11 @@ var questions = [
       choices: categories
     },
     {
-      type: 'input',
-      name: 'year',
-      message: "Please enter the year you want to delete (example: 2008):",
-      validate: function(value) {
-        var pass = value.match(
-          /^\d{4}$/
-        );
-        if (pass) {
-          return true;
-        }
-        return 'Please enter a valid year (example: 2008)';
-      }
+      type: 'checkbox',
+      name: 'years',
+      message: "Select the years you\'d like to delete:",
+      paginated: false,
+      choices: years
     }
 ];
 
