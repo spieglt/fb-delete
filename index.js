@@ -32,7 +32,7 @@ async function next(categories, years) {
     console.log("Deleting category " + categories[i]);
     await followLinkByContent(categories[i]);
     for (let j in years) {
-      console.log("In year " + years[j])
+      console.log("In year " + years[j]);
       try {
         await followLinkByContent(years[j]);
         await deleteYear(years[j]);
@@ -43,7 +43,7 @@ async function next(categories, years) {
     await followLinkByContent(categories[i]);
   }
 
-  await page.close()
+  await page.close();
   console.log("Done!");
   process.exit();
 }
@@ -72,7 +72,7 @@ async function deletePosts() {
 async function getMonthLinks(year) {
   var monthLinks = await page.evaluate((year) => {
     var months = ["January", "February", "March", "April", "May", "June", 
-      "July", "August", "September", "October", "November", "December"]
+      "July", "August", "September", "October", "November", "December"];
     var links = [];
     const elements = document.querySelectorAll('a');
     for (let el of elements) {
@@ -84,7 +84,7 @@ async function getMonthLinks(year) {
     }
     return links;
   }, year);
-  return monthLinks
+  return monthLinks;
 }
 
 async function followLinkByContent(content) {
