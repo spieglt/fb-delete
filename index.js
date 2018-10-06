@@ -124,19 +124,6 @@ async function followLinkByContent(content) {
   await page.goto(link);
 }
 
-async function confirmContent(content) {
-  var link = await page.evaluate((text) => {
-    const aTags = document.querySelectorAll('a');
-    for (let aTag of aTags) {
-      if (aTag.innerText === text) {
-        return aTag.href;
-      }
-    }
-    return undefined;
-  }, content);
-    return link;
-}
-
 async function deleteYear(year) {
   var monLinks = await getMonthLinks(year);
 
