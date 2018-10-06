@@ -20,6 +20,7 @@ async function main() {
   await page.$eval('input[name=login]', button => button.click());
   await page.goto('https://mbasic.facebook.com/');
 
+    //await next(answers.categories, answers.years, answers.months);
   await next(answers.categories, answers.years);
 }
 
@@ -48,24 +49,47 @@ async function next(categories, years) {
   process.exit();
 }
 
-async function deletePosts() {
+async function deletePosts(month, year) {
   // get all "allactivity/delete" and "allactivity/removecontent" links on page
-  var deleteLinks = await page.evaluate(() => {
-    var links = [];
-    const deleteElements = document.querySelectorAll('a[href*="allactivity/delete"]');
-    const removeElements = document.querySelectorAll('a[href*="allactivity/removecontent"]');
-    for (const el of deleteElements) {
-        links.push(el.href);
+        var deleteLinks = await page.evaluate(() => {
+            var links = [];
+            const deleteElements = document.querySelectorAll('a[href*="allactivity/delete"]');
+            const removeElements = document.querySelectorAll('a[href*="allactivity/removecontent"]');
+            for (const el of deleteElements) {
+                links.push(el.href);
+            }
+            for (const el of removeElements) {
+                links.push(el.href);
+            }
+            return links;
+        });
+      for (let i = 0; i < deleteLinks.length; i++) {
+        await page.goto(deleteLinks[i]);
+      }
+
+        //all links deleted.
+        //see if we have a load more link
+
+        //find the load more link
+        var text = 'Load more from';
+        var found_link = await page.evaluate((text) => {
+            const strings = []
+            const elements = document.querySelectorAll('a');
+            for (let el of elements) {
+                var innerText = el.innerText.trim();
+                var regex = new RegExp( text, 'i' );
+                strings.push({text: innerText, link: el.href});
+                if (innerText.match(regex)) {
+                    return el.href;
+                }
+              }
+                return; //return nothing if nothing found.
+      }, text);
+
+    if (found_link) {
+        await page.goto(found_link);
+        await deletePosts(month, year);
     }
-    for (const el of removeElements) {
-        links.push(el.href);
-    }
-    return links;
-  });
-  // visit them all to delete content
-  for (let i = 0; i < deleteLinks.length; i++) {
-      await page.goto(deleteLinks[i]);
-  }
 }
 
 
@@ -78,7 +102,8 @@ async function getMonthLinks(year) {
     for (let el of elements) {
       for (let i = 0; i < months.length; i++) {
         if (months[i] + " " + year === el.innerText) {
-          links.push(el.href);
+            
+          links.push({link: el.href, name: months[i]});
         }
       }
     }
@@ -99,12 +124,26 @@ async function followLinkByContent(content) {
   await page.goto(link);
 }
 
+async function confirmContent(content) {
+  var link = await page.evaluate((text) => {
+    const aTags = document.querySelectorAll('a');
+    for (let aTag of aTags) {
+      if (aTag.innerText === text) {
+        return aTag.href;
+      }
+    }
+    return undefined;
+  }, content);
+    return link;
+}
+
 async function deleteYear(year) {
   var monLinks = await getMonthLinks(year);
+
   for (let mon in monLinks) {
-    // console.log("Deleting month: ", monLinks[mon]);
-    await page.goto(monLinks[mon]);
-    await deletePosts();
+    console.log("Deleting month: ", monLinks[mon].name);
+    await page.goto(monLinks[mon].link);
+    await deletePosts(monLinks[mon].name, year);
   }
 }
 
