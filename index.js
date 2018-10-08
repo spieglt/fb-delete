@@ -1,26 +1,46 @@
+/*****
+ *
+ * FB Delete
+ * Deletes various Facebook content by page scraping the mbasic facebook page
+ * 
+ *
+ * *****/
+
+
 'use strict';
 
 const puppeteer = require('puppeteer');
 const prompts = require('./prompts');
-var page;
 
+var page;
+var deleteCount =0;
+var debug =0;
 async function main() {
 
   let answers = await prompts();
 
   const browser = await puppeteer.launch({
     headless: answers.headless,
-    slowMo: 100
+    slowMo: 100 //you don't want to go too fast otherwise you might trip a recaptcha on Facebook's end.
   });
   page = await browser.newPage();
 
-  await page.goto('https://mbasic.facebook.com/');
+  await page.goto('https://mbasic.facebook.com/'); //mbasic facebook I think is the facebook designed for non-smartphone phones (feature phones). It's easier to crawl than the mainstream FB.
   await page.$eval('input[id=m_login_email]', (el, user) => el.value = user, answers.username);
   await page.$eval('input[name=pass]', ((el, pass) => el.value = pass), answers.password);
   await page.$eval('input[name=login]', button => button.click());
   await page.goto('https://mbasic.facebook.com/');
 
-    //await next(answers.categories, answers.years, answers.months);
+//check to see if we didn't log in for some reason.
+//like if user put in wrong password or an old one.
+  if (await page.$('input[name=login]')) {
+    console.log("That login info didn't work. Try again!");
+    process.exit();
+  }
+
+  //  if (await page.$(selector) !== null) console.log('found');
+//else console.log('not found');
+
   await next(answers.categories, answers.years, answers.months);
 }
 
@@ -35,7 +55,15 @@ async function next(categories, years, months) {
     for (let j in years) {
       console.log("In year " + years[j]);
       try {
-        await followLinkByContent(years[j]);
+
+        var d = new Date();
+        var current_year = d.getFullYear();
+        if (years[i] == current_year) {
+            await followLinkByContent('This Month');
+        }
+        else {
+            await followLinkByContent(years[j]);
+        }
         await deleteYear(years[j], months);
       } catch(e) {
         console.log(`Year ${years[j]} not found.`, e);
@@ -45,7 +73,12 @@ async function next(categories, years, months) {
   }
 
   await page.close();
+  let done_string = "Done!";
+  if (deleteCount <=0 ) {
+    
+  }
   console.log("Done!");
+  console.log("Done! "+ "I deleted "+ deleteCount + " items from your account!");
   process.exit();
 }
 
@@ -92,14 +125,22 @@ async function deletePosts(month, year) {
             //delete if we haven't seen this link before.
             if (deleteLinks[i].seen ==0) {
                 deleteLinks[i].seen = 1;
-                await page.goto(deleteLinks[i].link);//deletes the post!
+                if (!debug) {
+                    await page.goto(deleteLinks[i].link);//deletes the post!
+                }
+                deleteCount = deleteCount + 1;
             }
 
       }
 
     //if we found the load more link, means we still gots deleting to do on the month. keep going.
       if (found_more_link) {
-        await deletePosts(month, year);
+        if (debug) {
+            await page.goto(found_more_link); //click on the more link. otherwise, we're stuck in a recursive loop. :)
+        }
+        else {
+            await deletePosts(month, year);
+        }
       }
 
 }
@@ -110,15 +151,22 @@ async function getMonthLinks(year, selected_months) {
     var months = ["January", "February", "March", "April", "May", "June", 
       "July", "August", "September", "October", "November", "December"];
     var links = [];
+      var d = new Date();
+    var current_month = months[d.getMonth()];
+    var current_year = d.getFullYear();
     const elements = document.querySelectorAll('a');
     for (let el of elements) {
       for (let i = 0; i < months.length; i++) {
         if (!selected_months[months[i]]) {//if we reached a month that the user doesn't want, skip.
             continue;
         }
-        if (months[i] + " " + year === el.innerText) {
-            
-          links.push({link: el.href, name: months[i]});
+        if (months[i] == current_month && year == current_year) { //the current year and month section is listed as This Month
+            if (el.innerText == 'This Month') {
+              links.push({link: el.href, name: months[i]});
+            }
+        }
+        else if (months[i] + " " + year === el.innerText) {
+              links.push({link: el.href, name: months[i]});
         }
       }
     }
