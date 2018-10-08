@@ -8,6 +8,8 @@ for (let i = 2004; i <= currentYear; i++) {
 }
 years.reverse();
 
+var months = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'];
+
 var categories = ["Posts",
   "Posts You're Tagged In",
   "Photos and Videos",
@@ -60,6 +62,18 @@ var questions = [
       message: "Select the years you\'d like to delete:",
       paginated: false,
       choices: years
+    },
+    {
+      type: 'checkbox',
+      name: 'months',
+      message: "Select the months you\'d like to delete for those years:",
+      paginated: false,
+      choices: months
+    },
+    {
+      type: 'confirm',
+      name: 'headless',
+      message: "Run headless? (Running headless will hide the browser from you, so you can't see the scripts at work, but it's much faster!):",
     }
 ];
 

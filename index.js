@@ -9,7 +9,7 @@ async function main() {
   let answers = await prompts();
 
   const browser = await puppeteer.launch({
-    headless: false,
+    headless: answers.headless,
     slowMo: 100
   });
   page = await browser.newPage();
@@ -21,10 +21,10 @@ async function main() {
   await page.goto('https://mbasic.facebook.com/');
 
     //await next(answers.categories, answers.years, answers.months);
-  await next(answers.categories, answers.years);
+  await next(answers.categories, answers.years, answers.months);
 }
 
-async function next(categories, years) {
+async function next(categories, years, months) {
   await followLinkByContent('Profile');
   await followLinkByContent('Activity Log');
   await followLinkByContent('Filter');
@@ -36,7 +36,7 @@ async function next(categories, years) {
       console.log("In year " + years[j]);
       try {
         await followLinkByContent(years[j]);
-        await deleteYear(years[j]);
+        await deleteYear(years[j], months);
       } catch(e) {
         console.log(`Year ${years[j]} not found.`, e);
       }
@@ -65,16 +65,16 @@ async function deletePosts(month, year) {
         });
         
 
-    var found_link;
+    var found_more_link;//if defined, this lets the program know that there are more links to delete for the given month.
+    //and we need to run the function recursively.
 
-    //possible bug. Not a show stopper, but I think it's deleting certain links more than once.
       for (let i = 0; i < deleteLinks.length; i++) {
         
         //make sure we don't have more to load if this is the last item on the list:
         if (deleteLinks[deleteLinks.length -1] == deleteLinks[i]) {
             //find the load more link
             var text = 'Load more from';
-            found_link = await page.evaluate((text) => {
+            found_more_link = await page.evaluate((text) => {
                 const strings = []
                 const elements = document.querySelectorAll('a');
                 for (let el of elements) {
@@ -92,29 +92,30 @@ async function deletePosts(month, year) {
             //delete if we haven't seen this link before.
             if (deleteLinks[i].seen ==0) {
                 deleteLinks[i].seen = 1;
-                await page.goto(deleteLinks[i].link);
+                await page.goto(deleteLinks[i].link);//deletes the post!
             }
 
       }
 
     //if we found the load more link, means we still gots deleting to do on the month. keep going.
-
-      if (found_link) {
-        //await page.goto(found_link);
+      if (found_more_link) {
         await deletePosts(month, year);
       }
 
 }
 
 
-async function getMonthLinks(year) {
-  var monthLinks = await page.evaluate((year) => {
+async function getMonthLinks(year, selected_months) {
+  var monthLinks = await page.evaluate((year, selected_months) => {
     var months = ["January", "February", "March", "April", "May", "June", 
       "July", "August", "September", "October", "November", "December"];
     var links = [];
     const elements = document.querySelectorAll('a');
     for (let el of elements) {
       for (let i = 0; i < months.length; i++) {
+        if (!selected_months[months[i]]) {//if we reached a month that the user doesn't want, skip.
+            continue;
+        }
         if (months[i] + " " + year === el.innerText) {
             
           links.push({link: el.href, name: months[i]});
@@ -122,7 +123,7 @@ async function getMonthLinks(year) {
       }
     }
     return links;
-  }, year);
+  }, year, selected_months);
   return monthLinks;
 }
 
@@ -138,8 +139,14 @@ async function followLinkByContent(content) {
   await page.goto(link);
 }
 
-async function deleteYear(year) {
-  var monLinks = await getMonthLinks(year);
+async function deleteYear(year, months) {
+    //turn the selected months into a hash
+    //to use to filter out months we don't want to delete.
+    var selected_months ={};
+    for (let i=0; i <months.length; i++) {
+        selected_months[months[i]] = 1;
+    }
+    var monLinks = await getMonthLinks(year,selected_months);
 
   for (let mon in monLinks) {
     console.log("Deleting month: ", monLinks[mon].name);
