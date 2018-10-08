@@ -51,45 +51,59 @@ async function next(categories, years) {
 
 async function deletePosts(month, year) {
   // get all "allactivity/delete" and "allactivity/removecontent" links on page
-        var deleteLinks = await page.evaluate(() => {
+        var deleteLinks = await page.evaluate(() => { //get the delete links we have found on this page BEFORE hitting more button if it exists.
             var links = [];
             const deleteElements = document.querySelectorAll('a[href*="allactivity/delete"]');
             const removeElements = document.querySelectorAll('a[href*="allactivity/removecontent"]');
             for (const el of deleteElements) {
-                links.push(el.href);
+                links.push({link:el.href, seen:0});
             }
             for (const el of removeElements) {
-                links.push(el.href);
+                links.push({link:el.href, seen:0});
             }
             return links;
         });
+        
+
+    var found_link;
+
+    //possible bug. Not a show stopper, but I think it's deleting certain links more than once.
       for (let i = 0; i < deleteLinks.length; i++) {
-        await page.goto(deleteLinks[i]);
+        
+        //make sure we don't have more to load if this is the last item on the list:
+        if (deleteLinks[deleteLinks.length -1] == deleteLinks[i]) {
+            //find the load more link
+            var text = 'Load more from';
+            found_link = await page.evaluate((text) => {
+                const strings = []
+                const elements = document.querySelectorAll('a');
+                for (let el of elements) {
+                    var innerText = el.innerText.trim();
+                    var regex = new RegExp( text, 'i' );
+                    strings.push({text: innerText, link: el.href});
+                    if (innerText.match(regex)) {
+                        return el.href;
+                    }
+                  }
+                    return; //return nothing if nothing found.
+          }, text);
+
+        }
+            //delete if we haven't seen this link before.
+            if (deleteLinks[i].seen ==0) {
+                deleteLinks[i].seen = 1;
+                await page.goto(deleteLinks[i].link);
+            }
+
       }
 
-        //all links deleted.
-        //see if we have a load more link
+    //if we found the load more link, means we still gots deleting to do on the month. keep going.
 
-        //find the load more link
-        var text = 'Load more from';
-        var found_link = await page.evaluate((text) => {
-            const strings = []
-            const elements = document.querySelectorAll('a');
-            for (let el of elements) {
-                var innerText = el.innerText.trim();
-                var regex = new RegExp( text, 'i' );
-                strings.push({text: innerText, link: el.href});
-                if (innerText.match(regex)) {
-                    return el.href;
-                }
-              }
-                return; //return nothing if nothing found.
-      }, text);
-
-    if (found_link) {
-        await page.goto(found_link);
+      if (found_link) {
+        //await page.goto(found_link);
         await deletePosts(month, year);
-    }
+      }
+
 }
 
 
