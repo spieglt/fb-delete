@@ -9,12 +9,29 @@
 
 'use strict';
 
+const optionDefinitions = [
+  { name: 'debug', alias: 'd', type: Boolean },
+  { name: 'username', alias: 'u', type: String },
+  { name: 'password', alias: 'p', type: String },
+  { name: 'categories', alias: 'c', type: String, multiple: true},
+  { name: 'years', alias: 'y', type: String, multiple: true},
+  { name: 'months', alias: 'm', type: String, multiple: true}
+]
+
+
+const commandLineArgs = require('command-line-args')
+const options = commandLineArgs(optionDefinitions)
 const puppeteer = require('puppeteer');
 const prompts = require('./prompts');
 
 var page;
 var deleteCount =0;
-var debug =0;
+var debug = options.debug;
+
+if (debug) {
+    console.log("WARNING: In debug mode. Nothing will actually be deleted. :)");
+}
+
 async function main() {
 
   let answers = await prompts();
@@ -37,18 +54,14 @@ async function main() {
     console.log("That login info didn't work. Try again!");
     process.exit();
   }
-
-  //  if (await page.$(selector) !== null) console.log('found');
-//else console.log('not found');
-
   await next(answers.categories, answers.years, answers.months);
 }
 
 async function next(categories, years, months) {
-  await followLinkByContent('Profile');
-  await followLinkByContent('Activity Log');
-  await followLinkByContent('Filter');
 
+      await followLinkByContent('Profile');
+      await followLinkByContent('Activity Log');
+      await followLinkByContent('Filter');
   for (let i in categories) {
     console.log("Deleting category " + categories[i]);
     await followLinkByContent(categories[i]);
@@ -77,7 +90,6 @@ async function next(categories, years, months) {
   if (deleteCount <=0 ) {
     
   }
-  console.log("Done!");
   console.log("Done! "+ "I deleted "+ deleteCount + " items from your account!");
   process.exit();
 }
@@ -129,6 +141,9 @@ async function deletePosts(month, year) {
                     await page.goto(deleteLinks[i].link);//deletes the post!
                 }
                 deleteCount = deleteCount + 1;
+                if (debug) {
+                    console.log("Would have deleted item number " + deleteCount);
+                }
             }
 
       }
@@ -176,6 +191,13 @@ async function getMonthLinks(year, selected_months) {
 }
 
 async function followLinkByContent(content) {
+
+      var d = new Date();
+    var current_year = d.getFullYear();
+
+    if (content == current_year) {
+        content = "This Month";
+    }
   var link = await page.evaluate((text) => {
     const aTags = document.querySelectorAll('a');
     for (let aTag of aTags) {

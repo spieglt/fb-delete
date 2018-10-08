@@ -9,6 +9,7 @@
   "author": "Theron Spiegl",
   "license": "MIT",
   "dependencies": {
+    "command-line-args": "^5.0.2",
     "inquirer": "^5.2.0",
     "puppeteer": "^1.2.0"
   },
