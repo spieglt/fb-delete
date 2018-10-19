@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="UTF-8">
+    <title>Facebook Cleaner</title>
+    <link rel="stylesheet" href="./node_modules/bootstrap/dist/css/bootstrap.min.css">
+    <link rel="stylesheet" href="./node_modules/bootstrap-select/dist/css/bootstrap-select.min.css" type="text/css"/>
+  </head>
+  <body>
+
+    <div class="container">
+    <div class="card">
+        <h4 class="card-title">Facebook Cleaner</h4>
+
+        <h6 class="card-subtitle mb-2 text-muted"><button type="button" id="modal_show" class="btn btn-info">About</button></h6>
+
+	<form>
+
+        <div class="form-group"> <!-- username -->
+            <label for="username" class="control-label">Username</label>
+            <input type="text" class="form-control" id="username" name="username" placeholder="">
+        </div>	
+
+        <div class="form-group"> <!-- password -->
+            <label for="password" class="control-label">Password</label>
+            <input type="password" class="form-control" id="password" name="password">
+        </div>					
+                                
+        <div class="form-group"> <!-- categories -->
+            <label for="categories" class="control-label">Categories</label>
+            <select class="form-control" id="categories" multiple>
+            </select>				
+        </div>
+
+        <div class="form-group"> <!-- years -->
+            <label for="years" class="control-label">Years</label>
+            <select class="form-control" id="years" multiple>
+            </select>					
+        </div>
+        
+        <div class="form-group"> <!-- months -->
+            <label for="months" class="control-label">Months</label>
+            <select class="form-control" id="months" multiple>
+            </select>					
+        </div>
+       
+        <!--status -->
+        <div class="form-group">
+            <label for="status" class="control-label">Script Status:</label>
+            <input type="text" class="form-control" id="status" placeholder="Not running" disabled>
+        </div>
+
+        <div class="form-group"> <!-- Submit Button -->
+            <button type="submit" class="btn btn-primary" id="do_it_button">DO IT!</button>
+        </div>     
+        <div class="form-group">
+
+            <label class="control-label">If you like this, buy me a coffee so I can do more cool things like this app!</label>
+            <style>.bmc-button img{width: 27px !important;margin-bottom: 1px !important;box-shadow: none !important;border: none !important;vertical-align: middle !important;}.bmc-button{line-height: 36px !important;height:37px !important;text-decoration: none !important;display:inline-flex !important;color:#FFFFFF !important;background-color:#FF813F !important;border-radius: 3px !important;border: 1px solid transparent !important;padding: 1px 9px !important;font-size: 22px !important;letter-spacing: 0.6px !important;box-shadow: 0px 1px 2px rgba(190, 190, 190, 0.5) !important;-webkit-box-shadow: 0px 1px 2px 2px rgba(190, 190, 190, 0.5) !important;margin: 0 auto !important;font-family:'Cookie', cursive !important;-webkit-box-sizing: border-box !important;box-sizing: border-box !important;-o-transition: 0.3s all linear !important;-webkit-transition: 0.3s all linear !important;-moz-transition: 0.3s all linear !important;-ms-transition: 0.3s all linear !important;transition: 0.3s all linear !important;}.bmc-button:hover, .bmc-button:active, .bmc-button:focus {-webkit-box-shadow: 0px 1px 2px 2px rgba(190, 190, 190, 0.5) !important;text-decoration: none !important;box-shadow: 0px 1px 2px 2px rgba(190, 190, 190, 0.5) !important;opacity: 0.85 !important;color:#FFFFFF !important;}</style><link href="https://fonts.googleapis.com/css?family=Cookie" rel="stylesheet"><a class="bmc-button" target="_blank" href="https://www.buymeacoffee.com/1YHBCu3Fq"><img src="https://www.buymeacoffee.com/assets/img/BMC-btn-logo.svg" alt="Buy me a Coffee"><span style="margin-left:5px">Buy me a Coffee</span></a><br/>
+
+        </div> 
+    </form>
+        <small>
+            We are using Node.js <script>document.write(process.versions.node)</script>,
+            Chromium <script>document.write(process.versions.chrome)</script>,
+            and Electron <script>document.write(process.versions.electron)</script>.
+        </small>
+    </div>
+    </div>
+    <script>
+      // You can also require other files to run in this process
+      require('./renderer.js')
+      require('./delete_fb_stuff.js')
+    </script>
+
+    <script>
+
+    </script>
+    <script type="text/javascript" src="./node_modules/bootstrap-select/dist/js/bootstrap-select.min.js"></script>
+    <script type="text/javascript" src="./frontend.js"></script>
+
+    <div class="modal" tabindex="-1" role="dialog">
+      <div class="modal-dialog" role="document">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title">About</h5>
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+              <span aria-hidden="true">&times;</span>
+            </button>
+          </div>
+          <div class="modal-body">
+              <h6 class="modal-subtitle"> Fork off of fb-delete from <a target="_blank" href="https://github.com/spieglt/fb-delete">https://github.com/spieglt/fb-delete</a></h6>
+              <br/>
+              This will pernamently delete the selected data. (Well, as best as you can "delete" anything from Facebook really.)<br/><br/>
+              <strong>Absolutely none</strong> of <strong>your data</strong> is sent to me or anywhere other than Facebook's servers. (The program is open source, look at the code if you don't believe me.)<br/><br/>
+              <strong>Be sure to get a backup of your FB data from here: <a href="https://www.facebook.com/help/1701730696756992">https://www.facebook.com/help/1701730696756992</a>, just in case you accidently delete your treasured photos.</strong><br/><br/>
+            <strong> Use this app at your own risk. There is no promise that this isn't bug free.  By using this, you accept that I am not responsible for deletion of anything you didn't want deleted. :)</strong><br/></p>
+
+
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+          </div>
+        </div>
+      </div>
+</div>
+
+  </body>
+</html>
