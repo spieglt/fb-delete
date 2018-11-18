@@ -1,4 +1,4 @@
-Heavily modified fork of https://github.com/spieglt/fb-delete.  Credit goes to spieglt for the code base.
+Heavily modified fork of https://github.com/spieglt/fb-delete.  Credit goes to spieglt for the code base. The read me below is his work.  I haven't had a chance to re do it for the GUI updates. :)
 
 
 
