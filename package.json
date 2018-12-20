@@ -5,9 +5,9 @@
   "main": "main.js",
   "scripts": {
     "start": "electron .",
-    "package-mac": "electron-packager . --overwrite --platform=darwin --arch=x64 --icon=assets/icons/mac/apple-icon-64x64.png--prune=true --out=release-builds",
-    "package-win": "electron-packager . --overwrite --platform=win32 --arch=ia32 --icon=assets/icons/win/favicon-64x64.png --prune=true --out=release-builds --version-string.CompanyName=CE --version-string.FileDescription=CE --version-string.ProductName=\"FaceSpace-Cleaner\"",
-    "package-linux": "electron-packager . --overwrite --asar=true --platform=linux --arch=x64 --icon=assets/icons/png/favicon-64x64.png --prune=true --out=release-builds"
+    "package-mac": "electron-packager . --overwrite --platform=darwin --arch=x64 --icon=assets/icons/mac/FaceSpaceClear.icns --prune=true --out=release-builds",
+    "package-win": "electron-packager . --overwrite --platform=win32 --arch=ia32 --icon=assets/icons/win/icon_32x32@2x.png --prune=true --out=release-builds --version-string.CompanyName=CE --version-string.FileDescription=CE --version-string.ProductName=\"FaceSpace-Cleaner\"",
+    "package-linux": "electron-packager . --overwrite --asar=true --platform=linux --arch=x64 --icon=assets/icons/png/icon_32x32@2x.png --prune=true --out=release-builds"
   },
   "author": "Alex Yong",
   "license": "MIT",
@@ -20,7 +20,8 @@
   },
   "repository": "https://github.com/alexjyong/facespace-cleaner",
   "devDependencies": {
+    "command-line-args": "^5.0.2",
     "electron": "^3.0.3",
-    "command-line-args": "^5.0.2"
+    "electron-packager": "^13.0.1"
   }
 }
