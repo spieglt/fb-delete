@@ -1,3 +1,7 @@
+Heavily modified fork of https://github.com/spieglt/fb-delete.  Credit goes to spieglt for the code base. The read me below is his work.  I haven't had a chance to re do it for the GUI updates. :)
+
+
+
 # Inspiration
 - http://www.jaruzel.com/blog/How-I-Erased-5000-Facebook-Comments-and-Likes
 - Desire to use Facebook for keeping in touch with distant friends and family despite their numerous failures to protect/respect users' data and privacy
