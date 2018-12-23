@@ -1,4 +1,4 @@
-Heavily modified fork of https://github.com/spieglt/fb-delete.  Credit goes to spieglt for the code base. 
+Heavily modified fork of https://github.com/spieglt/fb-delete.  Credit goes to spieglt for the code base. Please visit his repo and give him some love! 
 
 # Description
 
@@ -7,6 +7,8 @@ GUI wrapper around a modified version of spieglt's code.  Punch in your username
 **Don't forget to back up your FB first! https://www.facebook.com/help/131112897028467 **
 
 As with spieglt's original code, none of your data (username, password, or anything else) is sent to me or anywhere other than Facebook's servers. It does not install a browser plugin. This is your computer talking to facebook.com by way of a Node script/Puppeteer. Puppeteer is a Node package developed by Google's Chrome team and allows you to drive a Chrome window programmatically.
+
+If you like what you see, consider some support! I enjoy making these in my free time, and a few bucks here and there always helps! buymeacoff.ee/1YHBCu3Fq
 
 # Setting up
 
