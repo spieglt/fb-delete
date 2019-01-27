@@ -1,4 +1,29 @@
-Heavily modified fork of https://github.com/spieglt/fb-delete.  Credit goes to spieglt for the code base. **The read me below is his work.**  I haven't had a chance to re do it for the GUI updates. :)
+Heavily modified fork of https://github.com/spieglt/fb-delete.  Credit goes to spieglt for the code base. Please visit his repo and give him some love! 
+
+# Description
+
+GUI wrapper around a modified version of spieglt's code.  Punch in your username and password, select categories of data you want to delete, along with the years and months, and let the scripts clean up your awkward posts from your college years! :)
+
+**Don't forget to back up your FB first! https://www.facebook.com/help/131112897028467 **
+
+As with spieglt's original code, none of your data (username, password, or anything else) is sent to me or anywhere other than Facebook's servers. It does not install a browser plugin. This is your computer talking to facebook.com by way of a Node script/Puppeteer. Puppeteer is a Node package developed by Google's Chrome team and allows you to drive a Chrome window programmatically.
+
+If you like what you see, consider some support! I enjoy making these in my free time, and a few bucks here and there always helps! buymeacoff.ee/1YHBCu3Fq
+
+# Setting up
+
+MacOS/Linux
+
+If you don't want to bother with the source code, download one of the binaries in the release section here: https://github.com/alexjyong/FaceSpace-Cleaner/releases.
+
+Download https://github.com/alexjyong/FaceSpace-Cleaner/releases/download/0.1.0/FaceSpace-Cleaner-darwin-x64.zip if you are using a Mac, or https://github.com/alexjyong/FaceSpace-Cleaner/releases/download/0.1.0/FaceSpace-Cleaner-linux-x64.zip If you are on Linux.
+
+If you rather build from source, or you are on Windows, do this instead:
+
+* Install Node.js/NPM: https://nodejs.org/en/download/
+* Download the Source code from the https://github.com/alexjyong/FaceSpace-Cleaner/releases link.
+* Open up a command prompt, Run `npm install` to install dependencies, and wait for it to finish.
+* Then run `npm start`.
 
 
 
@@ -14,31 +39,12 @@ Then: You will be prompted for your username, password, the categories of conten
 
 None of your data (username, password, or anything else) is sent to me or anywhere other than Facebook's servers. It does not install a browser plugin. This is your computer talking to facebook.com by way of a Node script/Puppeteer. Puppeteer is a Node package developed by Google's Chrome team and allows you to drive a Chrome window programmatically.
 
-**SEE WARNINGS IN DISCLAIMER SECTION BELOW**
-
-# Setup and Use
-- Install Node.js/NPM: https://nodejs.org/en/download/
-- Download or clone this repo (then unzip to a folder if downloading: https://github.com/spieglt/fb-delete/archive/master.zip)
-- Open your terminal or command prompt or Powershell and navigate to the fb-delete folder
-- Run `npm install` to install dependencies, wait for it to finish
-- Run `node ./index.js`, follow the prompts\*, then watch the magic happen
-- Close windows if it gets stuck, feel free to run again
-
-\*At the category prompt, use the space bar to select/deselect categories, the up and down arrows to move between them, and the Enter key to proceed. 
-`a` selects all categories (DANGEROUS! WILL UNFRIEND PEOPLE, DELETE PHOTOS, ETC.), and `i` inverts the current selection. Same goes for years selection.
-Navigate to your Activity Log on facebook.com as you normally would, click "Filters", and select a category if you'd like to see the kind of content that will be deleted.
-
-# Planned features
-- Output log file
-- Error handling
-
-Also strongly recommended: https://blog.mozilla.org/firefox/facebook-container-extension/
 
 # Disclaimer 
-I accept no responsibility if this program deletes anything you don't want deleted! If this is a concern, do not use this program! All deletions are final!
+I accept no responsiblity if this program mucks up your FB or deletes anything you rather keep.  If you are worried about that, I recommend not using this program. :)
+
+Also remember, nothing is truly gone from the internet. That being said, it does help to clean up your FB once in awhile. :)
 
 **IF YOU SELECT THE CATEGORY "Added Friends" FOR 2017, IT WILL UNFRIEND EVERY PERSON YOU BECAME FRIENDS WITH IN 2017!**
 
 **IF YOU SELECT THE CATEGORY "Photos and Videos" FOR 2008, IT WILL DELETE EVERY PHOTO YOU UPLOADED IN 2008! BEWARE!**
-
-This is all still probably pretty flaky. It works on my machine, but please leave feedback in Issues on Github if it doesn't work for you and I'll try to help if I can. Thanks for your interest and please check out https://github.com/spieglt/flyingcarpet!
