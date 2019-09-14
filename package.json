@@ -4,11 +4,12 @@
   "description": "git them posts on outta here",
   "main": "index.js",
   "scripts": {
-    "test": "test"
+    "start": "node -r dotenv/config index"
   },
   "author": "Theron Spiegl",
   "license": "MIT",
   "dependencies": {
+    "dotenv": "^8.1.0",
     "inquirer": "^5.2.0",
     "puppeteer": "^1.2.0"
   },

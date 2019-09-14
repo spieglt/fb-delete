@@ -1,14 +1,16 @@
 'use strict';
 const inquirer = require('inquirer');
 
-var currentYear = (new Date()).getFullYear();
-var years = [];
+const { EMAIL, PASSWORD } = process.env
+
+const currentYear = (new Date()).getFullYear();
+const years = [];
 for (let i = 2004; i <= currentYear; i++) {
   years.push(i.toString());
 }
 years.reverse();
 
-var categories = ["Posts",
+const categories = ["Posts",
   "Posts You're Tagged In",
   "Photos and Videos",
   "Photos You're Tagged In",
@@ -35,7 +37,7 @@ var categories = ["Posts",
   "Saved",
   "Apps"];
 
-var questions = [
+const questions = [
     {
       type: 'input',
       name: 'username',
@@ -63,11 +65,13 @@ var questions = [
     }
 ];
 
+console.log(EMAIL, PASSWORD)
+if (EMAIL) questions.shift()
+if (PASSWORD) questions.shift()
+
 async function prompt() {
-  return inquirer.prompt(questions)
-    .then(answers => {
-      return answers;
-    });
+  const answers = await inquirer.prompt(questions)
+  return answers
 }
 
 module.exports = prompt;
