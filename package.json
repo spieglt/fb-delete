@@ -11,7 +11,7 @@
   "dependencies": {
     "dotenv": "^8.1.0",
     "inquirer": "^5.2.0",
-    "puppeteer": "^1.2.0"
+    "puppeteer": "^1.20.0"
   },
   "repository": "https://github.com/spieglt/fb-delete"
 }
