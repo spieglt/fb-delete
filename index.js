@@ -4,6 +4,8 @@ const puppeteer = require('puppeteer');
 const prompts = require('./prompts');
 var page;
 
+const { EMAIL, PASSWORD } = process.env
+
 async function main() {
 
   let answers = await prompts();
@@ -15,8 +17,8 @@ async function main() {
   page = await browser.newPage();
 
   await page.goto('https://mbasic.facebook.com/');
-  await page.$eval('input[id=m_login_email]', (el, user) => el.value = user, answers.username);
-  await page.$eval('input[name=pass]', ((el, pass) => el.value = pass), answers.password);
+  await page.$eval('input[id=m_login_email]', (el, user) => el.value = user, EMAIL || answers.username);
+  await page.$eval('input[name=pass]', ((el, pass) => el.value = pass), PASSWORD || answers.password);
   await page.$eval('input[name=login]', button => button.click());
   await page.goto('https://mbasic.facebook.com/');
 
@@ -71,7 +73,7 @@ async function deletePosts() {
 
 async function getMonthLinks(year) {
   var monthLinks = await page.evaluate((year) => {
-    var months = ["January", "February", "March", "April", "May", "June", 
+    var months = ["January", "February", "March", "April", "May", "June",
       "July", "August", "September", "October", "November", "December"];
     var links = [];
     const elements = document.querySelectorAll('a');
