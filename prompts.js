@@ -65,7 +65,6 @@ const questions = [
     }
 ];
 
-console.log(EMAIL, PASSWORD)
 if (EMAIL) questions.shift()
 if (PASSWORD) questions.shift()
 
