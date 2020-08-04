@@ -1,7 +1,7 @@
 'use strict';
 const inquirer = require('inquirer');
 
-const { EMAIL, PASSWORD } = process.env
+const { EMAIL, PASSWORD } = process.env;
 
 const currentYear = (new Date()).getFullYear();
 const years = [];
@@ -69,8 +69,8 @@ if (EMAIL) questions.shift()
 if (PASSWORD) questions.shift()
 
 async function prompt() {
-  const answers = await inquirer.prompt(questions)
-  return answers
+  const answers = await inquirer.prompt(questions);
+  return answers;
 }
 
-module.exports = prompt;
+module.exports = { prompt, currentYear };

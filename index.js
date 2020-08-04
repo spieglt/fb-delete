@@ -1,15 +1,14 @@
 'use strict';
 
 const puppeteer = require('puppeteer');
-const prompts = require('./prompts');
+const p = require('./prompts');
 var page;
 
-const { EMAIL, PASSWORD } = process.env
+const { EMAIL, PASSWORD } = process.env;
 
 async function main() {
 
-  let answers = await prompts();
-
+  let answers = await p.prompt();
   const browser = await puppeteer.launch({
     headless: false,
     slowMo: 100
@@ -26,8 +25,7 @@ async function main() {
 }
 
 async function next(categories, years) {
-  await followLinkByContent('Profile');
-  await followLinkByContent('Activity Log');
+  await page.goto('https://mbasic.facebook.com/allactivity');
   await followLinkByContent('Filter');
 
   for (let i in categories) {
@@ -36,7 +34,9 @@ async function next(categories, years) {
     for (let j in years) {
       console.log("In year " + years[j]);
       try {
-        await followLinkByContent(years[j]);
+        if (years[j] != p.currentYear) {
+          await followLinkByContent(years[j]);
+        }
         await deleteYear(years[j]);
       } catch(e) {
         console.log(`Year ${years[j]} not found.`, e);
