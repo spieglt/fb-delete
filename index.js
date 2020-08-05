@@ -78,6 +78,9 @@ async function getMonthLinks(year) {
     var links = [];
     const elements = document.querySelectorAll('a');
     for (let el of elements) {
+      if ('This Month' === el.innerText) {
+        links.push(el.href);
+      }
       for (let i = 0; i < months.length; i++) {
         if (months[i] + " " + year === el.innerText) {
           links.push(el.href);
