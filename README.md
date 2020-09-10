@@ -13,13 +13,13 @@ None of your data (username, password, or anything else) is sent to me or anywhe
 **SEE WARNINGS IN DISCLAIMER SECTION BELOW**
 
 # Setup and Use
+- Set your Facebook to use English (US)
 - Install Node.js/NPM: https://nodejs.org/en/download/
 - Download or clone this repo (then unzip to a folder if downloading: https://github.com/spieglt/fb-delete/archive/master.zip)
 - Open your terminal or command prompt or Powershell and navigate to the fb-delete folder
 - Run `npm install` to install dependencies, wait for it to finish
-- Run `npm start`, follow the prompts\*, then watch the magic happen
+- Run `npm start`, and follow the prompts\*
     - The script supports loading FB credentials from a file. To do this copy the sample file `cp .env.sample .env` and fill it out.
-- Close windows if it gets stuck, feel free to run again
 
 \*At the category prompt, use the space bar to select/deselect categories, the up and down arrows to move between them, and the Enter key to proceed.
 `a` selects all categories (DANGEROUS! WILL UNFRIEND PEOPLE, DELETE PHOTOS, ETC.), and `i` inverts the current selection. Same goes for years selection.
