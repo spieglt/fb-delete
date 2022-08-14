@@ -5,6 +5,7 @@ const p = require("./prompts");
 var page;
 
 const { EMAIL, PASSWORD } = process.env;
+const DELAY = 500; // half a second
 
 async function main() {
   let answers = await p.prompt();
@@ -83,6 +84,8 @@ async function deletePosts() {
   });
   // visit them all to delete content
   for (let i = 0; i < deleteLinks.length; i++) {
+    // wait between clicks
+    await new Promise(r => setTimeout(r, DELAY));
     await page.goto(deleteLinks[i], { waitUntil: "load", timeout: 0 });
   }
 }
