@@ -13,6 +13,10 @@ async function main() {
   const browser = await puppeteer.launch({
     headless: false,
     slowMo: 100,
+    args: [
+      "--no-sandbox",
+      "--lang=en-US;q=0.9,en;q=0.8",
+    ],
   });
   page = await browser.newPage();
 
@@ -160,7 +164,7 @@ async function followLinkByContent(content) {
   var link = await page.evaluate((text) => {
     const aTags = document.querySelectorAll("a");
     for (let aTag of aTags) {
-      if (aTag.innerText === text) {
+      if (aTag.innerText.toLowerCase() === text.toLowerCase()) {
         return aTag.href;
       }
     }
