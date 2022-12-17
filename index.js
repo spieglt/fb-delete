@@ -102,6 +102,27 @@ async function deletePosts() {
   }
 }
 
+async function deletePostsWithConfirm() {
+  // get all "allactivity/delete" and "allactivity/removecontent" links on page
+  var deleteLinks = await page.evaluate(() => {
+    var links = [];
+    const unfriendElements = document.querySelectorAll(
+      'a[href*="activity_log/confirm_dialog"]'
+    );
+    for (const el of unfriendElements) {
+      links.push(el.href);
+    }
+    return links;
+  });
+  // visit them all to delete content
+  for (let i = 0; i < deleteLinks.length; i++) {
+    // wait between clicks
+    await new Promise(r => setTimeout(r, DELAY));
+    await page.goto(deleteLinks[i], { waitUntil: "load", timeout: 0 });
+    await deletePosts();
+  }
+}
+
 async function getMonthLinks(year) {
   var monthLinks = await page.evaluate((year) => {
     var months = [
@@ -156,6 +177,7 @@ async function deleteYear(year) {
     // console.log("Deleting month: ", monLinks[mon]);
     await page.goto(monLinks[mon], { waitUntil: "load", timeout: 0 });
     await deletePosts();
+    await deletePostsWithConfirm();
   }
 }
 
