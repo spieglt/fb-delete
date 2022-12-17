@@ -1,6 +1,7 @@
 "use strict";
 
 const puppeteer = require("puppeteer");
+const {TimeoutError} = require('puppeteer/Errors');
 const p = require("./prompts");
 var page;
 
@@ -16,6 +17,17 @@ async function main() {
   page = await browser.newPage();
 
   await page.goto("https://mbasic.facebook.com/");
+  try {
+    const allResultsSelector = 'button[name="accept_only_essential"]';
+    await page.waitForSelector(allResultsSelector,  {timeout: 5000});
+    await page.click(allResultsSelector);
+  } catch (e) {
+    if (e instanceof TimeoutError) {
+      // do nothing
+    } else {
+        throw e;
+    }
+  }
   await page.$eval(
     "input[id=m_login_email]",
     (el, user) => (el.value = user),
